@@ -97,8 +97,8 @@ def AccessLogApi(request,id = 0):
 @csrf_exempt
 def AddressApi(request,id = 0):
     if request.method== 'GET':
-        address = Address.objects.all()
-        Address_Serializer = AddressSerializer(address, many = True)
+        address = Address.objects.all() if id == 0 else Address.objects.get(address_id = id)
+        Address_Serializer = AddressSerializer(address, many = True if id == 0 else False)
         return JsonResponse(Address_Serializer.data, safe = False)
     elif request.method== 'POST':
         Address_data = JSONParser().parse(request)
@@ -184,8 +184,11 @@ def ContactApi(request,id = 0):
 @csrf_exempt
 def InventoryApi(request,id = 0):
     if request.method== 'GET':
-        inventory = Inventory.objects.all()
-        Inventory_Serializer = InventorySerializer(inventory, many = True)
+        objects = Inventory.objects.select_related('abc_client', "storage_type")
+        inventory = objects.all() if id == 0 else objects.get(inventory_id = id)
+        Inventory_Serializer = InventorySerializer(inventory, many = True if id == 0 else False)
+        # inventory = Inventory.objects.all()
+        # Inventory_Serializer = InventorySerializer(inventory, many = True)
         return JsonResponse(Inventory_Serializer.data, safe = False)
     elif request.method== 'POST':
         Inventory_data = JSONParser().parse(request)
@@ -213,8 +216,11 @@ def InventoryApi(request,id = 0):
 @csrf_exempt
 def ResourceTypeApi(request,id = 0):
     if request.method== 'GET':
-        resourcetype = ResourceType.objects.all()
-        ResourceType_Serializer = ResourceType(resourcetype, many = True)
+        resourcetype = ResourceType.objects.all() if id == 0 else resourcetype.objects.get(resource_id = id)
+        ResourceType_Serializer = ResourceTypeSerializer(resourcetype, many = True if id == 0 else False)
+
+        # resourcetype = ResourceType.objects.all()
+        # ResourceType_Serializer = ResourceType(resourcetype, many = True)
         return JsonResponse(ResourceType_Serializer.data, safe = False)
     elif request.method== 'POST':
         ResourceType_data = JSONParser().parse(request)
@@ -242,8 +248,10 @@ def ResourceTypeApi(request,id = 0):
 @csrf_exempt
 def StorageTypeApi(request,id = 0):
     if request.method== 'GET':
-        storagetype = StorageType.objects.all()
-        StorageType_Serializer = StorageTypeSerializer(storagetype, many = True)
+        storagetype = StorageType.objects.all() if id == 0 else storagetype.objects.get(storage_id = id)
+        StorageType_Serializer = StorageTypeSerializer(storagetype, many = True if id == 0 else False)
+        # storagetype = StorageType.objects.all()
+        # StorageType_Serializer = StorageTypeSerializer(storagetype, many = True)
         return JsonResponse(StorageType_Serializer.data, safe = False)
     elif request.method== 'POST':
         StorageType_data = JSONParser().parse(request)

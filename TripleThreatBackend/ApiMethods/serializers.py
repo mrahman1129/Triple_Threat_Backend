@@ -95,16 +95,20 @@ class InventorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Inventory 
         fields = ['inventory_id',
+                #   'abc_client.client_name',
                   'abc_client',
                   'inventory_name',
                   'storage_type',
+                #   'storage_type.type_name',
                   'max_item_capacity',
+
                   'address',
                   'created_by',
                   'created_date',
                   'modified_by',
                   'modified_date',
                   'is_deleted']
+        depth = 1
 
 class ResourceTypeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -128,6 +132,8 @@ class StorageTypeSerializer(serializers.ModelSerializer):
                   'modified_by',
                   'modified_date',
                   'is_deleted']
+
+
 
 
 
