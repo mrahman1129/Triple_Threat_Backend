@@ -91,7 +91,7 @@ class ContactSerializer(serializers.ModelSerializer):
                   'is_deleted']
 
 
-class InventorySerializer(serializers.ModelSerializer):
+class InventorySerializerWithRelatedFields(serializers.ModelSerializer):
     class Meta:
         model = Inventory 
         fields = ['inventory_id',
@@ -109,6 +109,21 @@ class InventorySerializer(serializers.ModelSerializer):
                   'modified_date',
                   'is_deleted']
         depth = 1
+
+class InventorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Inventory 
+        fields = ['inventory_id',
+                  'abc_client',
+                  'inventory_name',
+                  'storage_type',
+                  'max_item_capacity',
+                  'address',
+                  'created_by',
+                  'created_date',
+                  'modified_by',
+                  'modified_date',
+                  'is_deleted']
 
 class ResourceTypeSerializer(serializers.ModelSerializer):
     class Meta:

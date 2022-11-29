@@ -186,17 +186,18 @@ def InventoryApi(request,id = 0):
     if request.method== 'GET':
         objects = Inventory.objects.select_related('abc_client', "storage_type")
         inventory = objects.all() if id == 0 else objects.get(inventory_id = id)
-        Inventory_Serializer = InventorySerializer(inventory, many = True if id == 0 else False)
+        Inventory_Serializer = InventorySerializerWithRelatedFields(inventory, many = True if id == 0 else False)
         # inventory = Inventory.objects.all()
         # Inventory_Serializer = InventorySerializer(inventory, many = True)
         return JsonResponse(Inventory_Serializer.data, safe = False)
     elif request.method== 'POST':
         Inventory_data = JSONParser().parse(request)
+        print(Inventory_data)
         Inventory_Serializer = InventorySerializer(data = Inventory_data)
         if Inventory_Serializer.is_valid():
             Inventory_Serializer.save()
             return JsonResponse("Added Successfully", safe= False)
-        return JsonResponse("Failed to add", safe= False)
+        return JsonResponse(f"Failed to add because {Inventory_Serializer.errors}", safe= False)
     elif request.method== 'PUT':
         Inventory_data = JSONParser().parse(request)
         inventory = Inventory.objects.get(inventory_id = Inventory_data['inventory_id'])
